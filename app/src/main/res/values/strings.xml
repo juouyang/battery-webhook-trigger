@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Battery Webhook Trigger</string>
+    <string name="battery_status">電池狀態</string>
+    <string name="current_battery">目前電量</string>
+    <string name="charging_status">充電狀態</string>
+    <string name="settings">設定</string>
+    <string name="threshold_hint">電量門檻 (%)</string>
+    <string name="api_url_hint">API URL</string>
+    <string name="save_settings">儲存設定</string>
+    <string name="test_api">測試 API</string>
+    <string name="last_call_result">最近呼叫結果</string>
+    <string name="status">狀態</string>
+    <string name="clear">清除</string>
+    <string name="not_called_yet">尚未呼叫</string>
+    <string name="success">成功</string>
+    <string name="failed">失敗</string>
+    <string name="charging">充電中</string>
+    <string name="not_charging">未充電</string>
+    <string name="response_code">回應碼: %d</string>
+    <string name="timestamp">時間: %s</string>
+    <string name="settings_saved">設定已儲存</string>
+    <string name="please_enter_threshold">請輸入電量門檻</string>
+    <string name="threshold_range_error">電量門檻必須在 1-100 之間</string>
+    <string name="please_enter_api_url">請輸入 API URL</string>
+    <string name="api_test_success">API 測試成功</string>
+    <string name="api_test_failed">API 測試失敗</string>
+    <string name="test_failed_with_error">測試失敗: %s</string>
+    <string name="testing">測試中...</string>
+    <string name="result_cleared">已清除上次呼叫結果</string>
+    <string name="auto_api_called">電量達到 %d%%，已自動呼叫 Webhook</string>
+    <string name="auto_api_failed">自動 Webhook 呼叫失敗: %s</string>
+    <string name="battery_percentage">%d%%</string>
+</resources>

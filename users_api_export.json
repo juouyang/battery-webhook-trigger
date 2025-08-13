@@ -1,0 +1,43 @@
+{
+  "count": 20,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "id": 1,
+      "type": "user",
+      "url": "/api/v2/users/1/",
+      "related": {
+        "teams": "/api/v2/users/1/teams/",
+        "organizations": "/api/v2/users/1/organizations/",
+        "admin_of_organizations": "/api/v2/users/1/admin_of_organizations/",
+        "projects": "/api/v2/users/1/projects/",
+        "credentials": "/api/v2/users/1/credentials/",
+        "roles": "/api/v2/users/1/roles/",
+        "activity_stream": "/api/v2/users/1/activity_stream/",
+        "access_list": "/api/v2/users/1/access_list/",
+        "tokens": "/api/v2/users/1/tokens/",
+        "authorized_tokens": "/api/v2/users/1/authorized_tokens/",
+        "personal_tokens": "/api/v2/users/1/personal_tokens/"
+      },
+      "summary_fields": {
+        "user_capabilities": {
+          "edit": false,
+          "delete": false
+        }
+      },
+      "created": "2025-07-02T03:37:09.899346Z",
+      "modified": "2025-08-11T03:23:19.181233Z",
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "admin@example.com",
+      "is_superuser": true,
+      "is_system_auditor": false,
+      "ldap_dn": "",
+      "last_login": "2025-08-11T03:23:19.181233Z",
+      "external_account": null,
+      "auth": []
+    }
+  ]
+}
