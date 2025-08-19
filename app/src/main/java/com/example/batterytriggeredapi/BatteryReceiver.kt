@@ -29,17 +29,22 @@ class BatteryReceiver : BroadcastReceiver() {
         Log.d(TAG, "收到廣播: ${intent.action}")
         
         when (intent.action) {
-            Intent.ACTION_POWER_CONNECTED,
-            Intent.ACTION_POWER_DISCONNECTED -> {
-                Log.d(TAG, "電源狀態變化，檢查電池狀態")
-                // 當電源連接/斷開時，檢查電池狀態
-                checkBatteryLevelFromSystem(context)
-                // 確保監控服務運行
+            Intent.ACTION_POWER_CONNECTED -> {
+                Log.i(TAG, "電源已連接 - 啟動監控服務")
+                // 插電時啟動前景服務
                 startMonitoringService(context)
+                // 檢查當前電池狀態
+                checkBatteryLevelFromSystem(context)
+            }
+            Intent.ACTION_POWER_DISCONNECTED -> {
+                Log.i(TAG, "電源已斷開 - 停止監控服務")
+                // 拔電時停止前景服務
+                stopMonitoringService(context)
             }
             Intent.ACTION_BOOT_COMPLETED -> {
-                Log.d(TAG, "系統開機完成，啟動電池監控服務")
-                startMonitoringService(context)
+                Log.d(TAG, "系統開機完成，檢查是否需要啟動監控服務")
+                // 開機時只有在充電中才啟動服務
+                checkBatteryAndStartServiceIfCharging(context)
             }
         }
     }
@@ -82,9 +87,39 @@ class BatteryReceiver : BroadcastReceiver() {
         try {
             val serviceIntent = Intent(context, BatteryMonitorService::class.java)
             context.startForegroundService(serviceIntent)
-            Log.d(TAG, "已啟動電池監控前台服務")
+            Log.i(TAG, "✅ 已啟動電池監控前台服務")
         } catch (e: Exception) {
-            Log.e(TAG, "啟動監控服務失敗: ${e.message}")
+            Log.e(TAG, "❌ 啟動監控服務失敗: ${e.message}")
+        }
+    }
+    
+    private fun stopMonitoringService(context: Context) {
+        try {
+            val serviceIntent = Intent(context, BatteryMonitorService::class.java)
+            context.stopService(serviceIntent)
+            Log.i(TAG, "✅ 已停止電池監控前台服務")
+        } catch (e: Exception) {
+            Log.e(TAG, "❌ 停止監控服務失敗: ${e.message}")
+        }
+    }
+    
+    private fun checkBatteryAndStartServiceIfCharging(context: Context) {
+        try {
+            val batteryStatus = context.registerReceiver(null, android.content.IntentFilter(Intent.ACTION_BATTERY_CHANGED))
+            batteryStatus?.let { intent ->
+                val status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
+                val isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+                               status == BatteryManager.BATTERY_STATUS_FULL
+                
+                if (isCharging) {
+                    Log.i(TAG, "開機時正在充電，啟動監控服務")
+                    startMonitoringService(context)
+                } else {
+                    Log.d(TAG, "開機時未充電，不啟動監控服務")
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "檢查開機充電狀態失敗: ${e.message}")
         }
     }
     
