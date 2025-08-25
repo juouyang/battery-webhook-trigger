@@ -205,7 +205,7 @@ class MainActivity : AppCompatActivity() {
     private fun resetTriggerStatus() {
         Log.d(TAG, "重置觸發狀態")
         preferencesManager.resetTriggerStatus()
-        Toast.makeText(this, "已重置觸發狀態，今日可重新觸發", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "已重置觸發狀態，可重新觸發", Toast.LENGTH_SHORT).show()
     }
     
     private fun manualTriggerTest() {
