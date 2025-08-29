@@ -24,6 +24,7 @@ class PreferencesManager(context: Context) {
         private const val KEY_LAST_SUCCESS_LEVEL = "last_success_level"
         private const val KEY_LAST_ATTEMPT_LEVEL = "last_attempt_level"
         private const val KEY_IS_TRIGGERING = "is_triggering"
+        private const val KEY_MONITORING_ENABLED = "monitoring_enabled"
         
         private const val DEFAULT_THRESHOLD = 80
         private const val DEFAULT_API_URL = "https://example.com/api/poweroff"
@@ -135,5 +136,14 @@ class PreferencesManager(context: Context) {
     fun clearTriggeringFlag() {
         Log.d(TAG, "清除觸發中標記")
         prefs.edit().putBoolean(KEY_IS_TRIGGERING, false).apply()
+    }
+    
+    fun isMonitoringEnabled(): Boolean {
+        return prefs.getBoolean(KEY_MONITORING_ENABLED, true)
+    }
+    
+    fun setMonitoringEnabled(enabled: Boolean) {
+        Log.d(TAG, "設定監控狀態: $enabled")
+        prefs.edit().putBoolean(KEY_MONITORING_ENABLED, enabled).apply()
     }
 }

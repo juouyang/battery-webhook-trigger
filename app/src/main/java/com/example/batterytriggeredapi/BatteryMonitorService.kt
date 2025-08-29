@@ -95,8 +95,15 @@ class BatteryMonitorService : Service() {
         val preferencesManager = PreferencesManager(context)
         val threshold = preferencesManager.getThreshold()
         val apiUrl = preferencesManager.getApiUrl()
+        val monitoringEnabled = preferencesManager.isMonitoringEnabled()
         
-        Log.d(TAG, "設定檢查: 門檻=$threshold% | API URL=$apiUrl")
+        Log.d(TAG, "設定檢查: 門檻=$threshold% | API URL=$apiUrl | 監控啟用=$monitoringEnabled")
+        
+        // 如果監控被停用，直接返回
+        if (!monitoringEnabled) {
+            Log.d(TAG, "監控已停用，跳過觸發檢查")
+            return
+        }
         
         // 檢查觸發條件 - 新邏輯：每隔1%觸發直到成功
         val shouldTrigger = isCharging && preferencesManager.shouldTriggerAtLevel(batteryPct, threshold)

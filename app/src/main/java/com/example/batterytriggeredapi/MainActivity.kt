@@ -61,6 +61,19 @@ class MainActivity : AppCompatActivity() {
             resetLastResult()
         }
         
+        // 監控開關
+        binding.switchMonitoring.isChecked = preferencesManager.isMonitoringEnabled()
+        binding.switchMonitoring.setOnCheckedChangeListener { _, isChecked ->
+            preferencesManager.setMonitoringEnabled(isChecked)
+            if (isChecked) {
+                startBatteryMonitorService()
+                Toast.makeText(this, "已啟用電量監控", Toast.LENGTH_SHORT).show()
+            } else {
+                stopBatteryMonitorService()
+                Toast.makeText(this, "已停用電量監控", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         // 重置觸發狀態按鈕
         binding.btnResetTrigger.setOnClickListener {
             resetTriggerStatus()
@@ -71,8 +84,10 @@ class MainActivity : AppCompatActivity() {
             manualTriggerTest()
         }
         
-        // 啟動監控服務
-        startBatteryMonitorService()
+        // 根據監控開關狀態決定是否啟動服務
+        if (preferencesManager.isMonitoringEnabled()) {
+            startBatteryMonitorService()
+        }
     }
     
     private fun saveSettings() {
@@ -98,10 +113,13 @@ class MainActivity : AppCompatActivity() {
         preferencesManager.saveThreshold(threshold)
         preferencesManager.saveApiUrl(apiUrl)
         
-        // 啟動監控服務
-        startBatteryMonitorService()
-        
-        Toast.makeText(this, "設定已儲存，電池監控已啟動", Toast.LENGTH_SHORT).show()
+        // 如果監控已啟用，重新啟動服務以應用新設定
+        if (preferencesManager.isMonitoringEnabled()) {
+            startBatteryMonitorService()
+            Toast.makeText(this, "設定已儲存，電池監控已更新", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "設定已儲存", Toast.LENGTH_SHORT).show()
+        }
     }
     
     private fun testApi() {
@@ -163,13 +181,20 @@ class MainActivity : AppCompatActivity() {
         batteryStatus?.let { intent ->
             val level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
             val scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
+            
+            if (level == -1 || scale == -1) {
+                Log.w(TAG, "無法取得電池資訊: level=$level, scale=$scale")
+                binding.tvBatteryLevel.text = "未知"
+                return
+            }
+            
             val batteryPct = (level * 100 / scale.toFloat()).toInt()
             
             val status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
             val isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
                            status == BatteryManager.BATTERY_STATUS_FULL
             
-            Log.d(TAG, "UI 電池狀態更新: $batteryPct% | 充電中: $isCharging")
+            Log.d(TAG, "UI 電池狀態更新: level=$level, scale=$scale, 計算結果=$batteryPct% | 充電中: $isCharging")
             
             binding.tvBatteryLevel.text = String.format(Locale.getDefault(), "%d%%", batteryPct)
             binding.tvChargingStatus.text = if (isCharging) getString(R.string.charging) else getString(R.string.not_charging)
@@ -200,6 +225,13 @@ class MainActivity : AppCompatActivity() {
         val serviceIntent = Intent(this, BatteryMonitorService::class.java)
         startForegroundService(serviceIntent)
         Log.d(TAG, "電池監控前台服務啟動命令已發送")
+    }
+    
+    private fun stopBatteryMonitorService() {
+        Log.d(TAG, "停止電池監控前台服務")
+        val serviceIntent = Intent(this, BatteryMonitorService::class.java)
+        stopService(serviceIntent)
+        Log.d(TAG, "電池監控前台服務停止命令已發送")
     }
     
     private fun resetTriggerStatus() {

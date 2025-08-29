@@ -193,6 +193,16 @@
                     android:layout_marginBottom="8dp"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
+                <!-- 監控開關 -->
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchMonitoring"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="啟用電量監控"
+                    android:textSize="16sp"
+                    android:checked="true"
+                    android:layout_marginBottom="16dp" />
+
                 <Button
                     android:id="@+id/btnResetTrigger"
                     android:layout_width="match_parent"
