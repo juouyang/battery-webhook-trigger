@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@android:drawable/ic_menu_mylocation"
+            android:title="主頁面" />
+            
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@android:drawable/ic_menu_preferences"
+            android:title="應用程式設定" />
+            
+        <item
+            android:id="@+id/nav_debug"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:title="除錯設定" />
+            
+    </group>
+
+    <item android:title="工具">
+        <menu>
+            <item
+                android:id="@+id/nav_clear_history"
+                android:icon="@android:drawable/ic_menu_delete"
+                android:title="清空歷史記錄" />
+                
+            <item
+                android:id="@+id/nav_test_logs"
+                android:icon="@android:drawable/ic_menu_send"
+                android:title="測試日誌等級" />
+                
+        </menu>
+    </item>
+
+    <item android:title="關於">
+        <menu>
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@android:drawable/ic_menu_help"
+                android:title="關於應用" />
+                
+            <item
+                android:id="@+id/nav_version"
+                android:icon="@android:drawable/ic_menu_info_details"
+                android:title="版本資訊" />
+        </menu>
+    </item>
+
+</menu>

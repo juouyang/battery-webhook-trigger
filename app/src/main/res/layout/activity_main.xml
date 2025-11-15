@@ -112,9 +112,19 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="設定"
+                    android:text="高電量監控設定"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- 高電量監控開關 -->
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchMonitoring"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="啟用高電量監控"
+                    android:textSize="16sp"
+                    android:checked="true"
                     android:layout_marginBottom="16dp" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -148,69 +158,88 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- 高電量 API 測試按鈕 -->
+                <Button
+                    android:id="@+id/btnTestHighBatteryApi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="測試高電量 API"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+                <!-- 低電量監控設定區域 -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="低電量監控設定"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurface"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- 低電量監控開關 -->
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switchLowBatteryMonitoring"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="啟用低電量監控"
+                    android:textSize="16sp"
+                    android:checked="false"
+                    android:layout_marginBottom="16dp" />
+
+                <!-- 低電量門檻設定 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etLowBatteryThreshold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="低電量門檻 (%)"
+                        android:inputType="number"
+                        android:text="20" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 低電量 API URL 設定 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etLowBatteryApiUrl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="低電量觸發 API URL"
+                        android:inputType="textUri"
+                        android:text="http://httpbin.org/get" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- 低電量 API 測試按鈕 -->
+                <Button
+                    android:id="@+id/btnTestLowBatteryApi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="測試低電量 API"
+                    android:textSize="12sp"
+                    android:layout_marginBottom="16dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
                 <Button
                     android:id="@+id/btnSaveSettings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="儲存設定"
+                    android:layout_marginBottom="8dp"
                     style="@style/Widget.MaterialComponents.Button" />
-
-            </LinearLayout>
-
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- API 測試區塊 -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardApiTest"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp"
-            app:layout_constraintTop_toBottomOf="@id/cardSettings"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="API 測試"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="16dp" />
-
-                <Button
-                    android:id="@+id/btnTestApi"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="測試 API"
-                    android:layout_marginBottom="8dp"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
-
-                <!-- 監控開關 -->
-                <com.google.android.material.switchmaterial.SwitchMaterial
-                    android:id="@+id/switchMonitoring"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="啟用電量監控"
-                    android:textSize="16sp"
-                    android:checked="true"
-                    android:layout_marginBottom="16dp" />
-
-                <Button
-                    android:id="@+id/btnResetTrigger"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="重置觸發狀態"
-                    android:textSize="12sp"
-                    android:layout_marginBottom="8dp"
-                    style="@style/Widget.MaterialComponents.Button.TextButton" />
 
                 <Button
                     android:id="@+id/btnManualTrigger"
@@ -218,21 +247,22 @@
                     android:layout_height="wrap_content"
                     android:text="測試觸發邏輯"
                     android:textSize="12sp"
-                    android:backgroundTint="@color/warning"
-                    style="@style/Widget.MaterialComponents.Button" />
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
+
 
         <!-- 最近呼叫結果區塊 -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardLastResult"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp"
-            app:layout_constraintTop_toBottomOf="@id/cardApiTest"
+            app:layout_constraintTop_toBottomOf="@id/cardSettings"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">

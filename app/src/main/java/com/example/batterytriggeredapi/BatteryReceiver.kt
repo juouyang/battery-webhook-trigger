@@ -31,20 +31,16 @@ class BatteryReceiver : BroadcastReceiver() {
         when (intent.action) {
             Intent.ACTION_POWER_CONNECTED -> {
                 Log.i(TAG, "電源已連接 - 啟動監控服務")
-                // 插電時啟動前景服務
                 startMonitoringService(context)
-                // 檢查當前電池狀態
-                checkBatteryLevelFromSystem(context)
             }
             Intent.ACTION_POWER_DISCONNECTED -> {
-                Log.i(TAG, "電源已斷開 - 停止監控服務")
-                // 拔電時停止前景服務
-                stopMonitoringService(context)
+                Log.i(TAG, "電源已斷開 - 保持監控服務運行（低電量監控需求）")
+                // 保持服務運行，因為可能需要低電量監控
+                startMonitoringService(context)
             }
             Intent.ACTION_BOOT_COMPLETED -> {
-                Log.d(TAG, "系統開機完成，檢查是否需要啟動監控服務")
-                // 開機時只有在充電中才啟動服務
-                checkBatteryAndStartServiceIfCharging(context)
+                Log.d(TAG, "系統開機完成，啟動監控服務")
+                startMonitoringService(context)
             }
         }
     }
@@ -103,25 +99,6 @@ class BatteryReceiver : BroadcastReceiver() {
         }
     }
     
-    private fun checkBatteryAndStartServiceIfCharging(context: Context) {
-        try {
-            val batteryStatus = context.registerReceiver(null, android.content.IntentFilter(Intent.ACTION_BATTERY_CHANGED))
-            batteryStatus?.let { intent ->
-                val status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
-                val isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
-                               status == BatteryManager.BATTERY_STATUS_FULL
-                
-                if (isCharging) {
-                    Log.i(TAG, "開機時正在充電，啟動監控服務")
-                    startMonitoringService(context)
-                } else {
-                    Log.d(TAG, "開機時未充電，不啟動監控服務")
-                }
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "檢查開機充電狀態失敗: ${e.message}")
-        }
-    }
     
     fun sendNotification(context: Context, message: String) {
         val channelId = "battery_api_channel"
